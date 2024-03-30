@@ -1,9 +1,10 @@
 import React from 'react'
+import Body from './components/Body'
 
 const App = () => {
   return (
-    <div className='bg-red-500 text-2xl'>Hello</div>
-  )
+    <Body/>
+    )
 }
 
 export default App

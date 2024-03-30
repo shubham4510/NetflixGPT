@@ -11,6 +11,7 @@
   - redirect to Browse Page
 - Browse (after authentication)
   - Header
+Login Form
   - Main Movie
         -Trailer in Background
         - Title & Description
