@@ -12,6 +12,12 @@
 - Browse (after authentication)
   - Header
 Login Form
+  - Sign up Form
+  - Form validation
+  - useRef hook
+  - Firebase Setup
+  - Create SignUp User Account
+  
   - Main Movie
         -Trailer in Background
         - Title & Description
