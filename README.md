@@ -17,6 +17,9 @@ Login Form
   - useRef hook
   - Firebase Setup
   - Create SignUp User Account
+  - Implement Sign In user Api
+  - Created Redux Store with userSlice
+  - Implemented Sign Out feature
   
   - Main Movie
         -Trailer in Background

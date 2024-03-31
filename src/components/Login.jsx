@@ -1,77 +1,64 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import checkValidData from "../utils/validate.jsx";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import {auth}  from "../utils/firebase.jsx";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebase.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [message, setMessage] = useState(null);
+  const navigate = useNavigate();
 
-  const email = useRef(null);
-  const password = useRef(null);
-
-
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const handleIsLoggedIn = () => {
     setIsLoggedIn(!isLoggedIn);
   };
 
-  const handleButtonClick = () => {
+
+  const handleButtonClick = async () => {
     // Validate the form data
+    const validationMessage = checkValidData(emailRef.current.value, passwordRef.current.value);
+    setMessage(validationMessage);
 
-    setMessage(checkValidData(email.current.value, password.current.value));
+    if (validationMessage) return;
 
-    if (message) return;
-
-    // Sign In Sign Up Logic
-
-    if (!isLoggedIn) {
+    try {
       // Sign Up Logic
-      createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
-        email.current.value,
-        password.current.value
-      )
-        .then((userCredential) => {
-          // Signed up
-          const user = userCredential.user;
-          setMessage(errorCode + "-" + errorMessage)
-          // ...
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // ..
-        });
-    } 
-  };
-
-  const handleButtonOnSignIn = () => {
-    // Sign In Logic
-  
-    if (isLoggedIn) {
-  
-      signInWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      )
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
-          // ...
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-        });
+        emailRef.current.value,
+        passwordRef.current.value
+      );
+      // Signed up successfully
+      const user = userCredential.user;
+      setMessage(""); // Clear any previous error messages
+      navigate("/browse");
+    } catch (error) {
+      const errorMessage = error.message;
+      setMessage(errorMessage || "An error occurred while signing up.");
     }
   };
-  
+
+  const handleButtonOnSignIn = async () => {
+    // Sign In Logic
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      );
+      // Signed in successfully
+      const user = userCredential.user;
+      setMessage(""); // Clear any previous error messages
+      navigate("/browse");
+    } catch (error) {
+      const errorMessage = error.message;
+      setMessage(errorMessage || "An error occurred while signing in.");
+    }
+  };
 
   return (
     <div className="text-white">
@@ -79,7 +66,6 @@ const Login = () => {
         <Header
           handleIsLoggedIn={handleIsLoggedIn}
           isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
         />
         <div>
           <img
@@ -110,22 +96,24 @@ const Login = () => {
             onSubmit={(e) => e.preventDefault()}
           >
             <input
-              ref={email}
+              ref={emailRef}
               type="email"
               name="email"
               placeholder="Email Address"
               className="px-2 m-2 w-[60vh]  border rounded-sm bg-black/60 "
             />
             <input
-              ref={password}
+              ref={passwordRef}
               type="password"
               name="password"
               placeholder="Password"
               className="px-2 m-2 w-[60vh]  border rounded-sm bg-black/60"
             />
-            <button className=" text-2xl bg-red-600 py-4 px-3 rounded-sm"
-            onClick={handleButtonOnSignIn}
-         >
+            <p className=" text-red-600">{message}</p>
+            <button
+              className=" text-2xl bg-red-600 py-4 px-3 rounded-sm"
+              onClick={handleButtonOnSignIn}
+            >
               Get Started
             </button>
           </form>
@@ -145,19 +133,20 @@ const Login = () => {
             placeholder="Full Name"
           />
           <input
-            ref={email}
+            ref={emailRef}
             className=" bg-gray-900/60 m-2 w-[40vh]  border rounded-sm px-2"
             type="email"
             name="email"
             placeholder="Email or phone number"
           />
           <input
-            ref={password}
+            ref={passwordRef}
             type="password"
             name="password"
             placeholder="Password"
             className=" px-2 m-2 w-[40vh] bg-gray-900/60 border rounded-sm "
           />
+
           <button
             className=" text-2xl bg-red-600 py-2 px-3 rounded-sm w-[40vh]"
             onClick={handleButtonClick}
@@ -170,30 +159,25 @@ const Login = () => {
             Use a sign-in code
           </button>
           <p className=" text-red-600">{message}</p>
-          <button className="w-[40vh] py-2">Forgot password?</button>
+          <button className="w-[40vh] py-2 hover:underline transition ease-in-out delay-150">
+            Forgot password?
+          </button>
 
           <div className=" flex gap-2 justify-center items-center">
             <input type="checkbox" className=" size-3" />
             <span>Remember me</span>
           </div>
 
-          <p
-            className=" text-gray-400 cursor-pointer"
-            onClick={handleIsLoggedIn}
-          >
-            {isLoggedIn
-              ? `New to Netflix? Sign up now.`
-              : ` Already registered? Sign in now`}
+          <p className=" text-gray-400 cursor-pointer" onClick={handleIsLoggedIn}>
+            Already registered?<span className="hover:text-white">Sign in now</span>
           </p>
           <p className=" text-center  text-gray-600 text-sm w-[40vw]">
             This page is protected by Google reCAPTCHA to
             <br /> ensure you're not a bot.
             <span className=" text-blue-800">Learn more.</span>
           </p>
-          <div cl></div>
         </form>
       )}
-      {console.log(email)}
     </div>
   );
 };

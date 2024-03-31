@@ -1,9 +1,12 @@
-import React from 'react'
+import { useState } from 'react'
+import Header from './Header.jsx'
 
 const Browse = () => {
+  const [userLogIn, setUserLogIn] = useState(true)
+
   return (
     <div>
-        <h1>Browse</h1>
+      <Header userLogIn={userLogIn}/>
     </div>
   )
 }
