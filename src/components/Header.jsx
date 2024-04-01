@@ -1,27 +1,35 @@
 import { getAuth, signOut } from "firebase/auth";
-import {auth} from '../utils/firebase'
 import { useNavigate } from "react-router-dom";
+import {LOGO} from '../utils/constants.jsx'
 
 const Header = ({handleIsLoggedIn,isLoggedIn,userLogIn}) => {
   const navigate = useNavigate()
 
-  const handleSignOut = async () =>{
-
+  const handleSignOut = async () => {
     const auth = getAuth();
-    signOut(auth).then(() => {
-      // Sign-out successful.
-      navigate("/")
-    }).catch((error) => {
-      // An error happened.
-      navigate("/error")
-    });
-  }
+    
+    // Check if the user is already signed out
+    if (!auth.currentUser) {
+      // User is already signed out, no need to sign out again
+      navigate("/");
+      return;
+    }
+  
+    try {
+      await signOut(auth);
+      // Sign-out successful
+      navigate("/");
+    } catch (error) {
+      // An error occurred during sign-out
+      navigate("/error");
+    }
+  };
 
 
 
   return (
     <div className=' absolute px-48 py-1 bg-gradient-to-b from-black z-50 text-white flex justify-between items-center w-[100vw]'>
-        <img className=' w-48' src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png" alt="logo" />
+        <img className=' w-48' src={LOGO} alt="logo" />
 
     {
       userLogIn?<button className={` ${userLogIn?"block":"hidden"} px-2 py-1 rounded-sm bg-red-600 text-white `} onClick={handleSignOut}>Sign Out</button>:

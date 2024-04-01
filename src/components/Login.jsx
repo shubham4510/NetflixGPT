@@ -4,6 +4,7 @@ import checkValidData from "../utils/validate.jsx";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/firebase.jsx";
 import { useNavigate } from "react-router-dom";
+import { BACKGROUND_IMG } from "../utils/constants.jsx";
 
 const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,7 +17,6 @@ const Login = () => {
   const handleIsLoggedIn = () => {
     setIsLoggedIn(!isLoggedIn);
   };
-
 
   const handleButtonClick = async () => {
     // Validate the form data
@@ -35,7 +35,8 @@ const Login = () => {
       // Signed up successfully
       const user = userCredential.user;
       setMessage(""); // Clear any previous error messages
-      navigate("/browse");
+      setIsLoggedIn(true); // Update isLoggedIn state
+      navigate("/browse"); // Navigate to the browse page
     } catch (error) {
       const errorMessage = error.message;
       setMessage(errorMessage || "An error occurred while signing up.");
@@ -53,7 +54,8 @@ const Login = () => {
       // Signed in successfully
       const user = userCredential.user;
       setMessage(""); // Clear any previous error messages
-      navigate("/browse");
+      setIsLoggedIn(true); // Update isLoggedIn state
+      navigate("/browse"); // Navigate to the browse page
     } catch (error) {
       const errorMessage = error.message;
       setMessage(errorMessage || "An error occurred while signing in.");
@@ -70,7 +72,7 @@ const Login = () => {
         <div>
           <img
             className=" scale-125 h-[100vh] w-[100vw]"
-            src="https://assets.nflxext.com/ffe/siteui/vlv3/7ca5b7c7-20aa-42a8-a278-f801b0d65fa1/fb548c0a-8582-43c5-9fba-cd98bf27452f/IN-en-20240326-popsignuptwoweeks-perspective_alpha_website_large.jpg"
+            src= {BACKGROUND_IMG}
             alt="background-image"
           />
 

@@ -20,6 +20,11 @@ Login Form
   - Implement Sign In user Api
   - Created Redux Store with userSlice
   - Implemented Sign Out feature
+  - BugFix: Sign up user displayName and profile picture update
+  - BugFix: Redirect if the user is not logged in Redirect /browse to Login Page and vice-versa
+  - Unsubscribed to the onAuthStateChanged Callback
+  - Add hardcoded values to the constants file
+  - Register TMDB API & create an app & get access token
   
   - Main Movie
         -Trailer in Background
