@@ -34,6 +34,7 @@ Login Form
   - Updated the Store with Trailer Video Data
   - Embedded the Youtube video and make it autoplay and mute
   - Tailwind Classes to make it look awesome
+  - Build Secondary Component
   
   - Main Movie
         -Trailer in Background

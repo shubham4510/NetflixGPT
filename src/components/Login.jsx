@@ -94,6 +94,8 @@ const Login = () => {
           </p>
 
           <form
+            name="sign-in"
+            id="sign-in"
             className=" flex justify-center items-center flex-col"
             onSubmit={(e) => e.preventDefault()}
           >
@@ -122,6 +124,8 @@ const Login = () => {
         </div>
       ) : (
         <form
+          name="sign-up"
+          id="sign-up"
           onSubmit={(e) => e.preventDefault()}
           className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center flex-col leading-[3rem]  bg-black/60 py-8 px-4 w-[30vw]"
         >

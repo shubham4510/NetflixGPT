@@ -28,7 +28,7 @@ const Header = ({handleIsLoggedIn,isLoggedIn,userLogIn}) => {
 
 
   return (
-    <div className=' absolute px-48 py-1 bg-gradient-to-b from-black z-50 text-white flex justify-between items-center w-[100vw]'>
+    <div className=' absolute px-48 py-1 bg-gradient-to-b from-black z-50 text-white flex justify-between items-center w-screen h-24'>
         <img className=' w-48' src={LOGO} alt="logo" />
 
     {
