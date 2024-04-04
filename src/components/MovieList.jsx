@@ -1,7 +1,6 @@
 import MovieCard from './MovieCard';
 
 const MovieList = ({ title, movies }) => {
-  console.log(movies);
 
   return movies && (
     <div className='translate-y-[-130px]'>

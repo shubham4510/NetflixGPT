@@ -35,6 +35,12 @@ Login Form
   - Embedded the Youtube video and make it autoplay and mute
   - Tailwind Classes to make it look awesome
   - Build Secondary Component
+  - Build Movie List
+  - Build Movie Card
+  - TMDB Image CDN URL
+  - Made the Browse page amazing with Tailwind CSS
+  - usePopular Custom Hook
+  - GPT Search Feature
   
   - Main Movie
         -Trailer in Background
