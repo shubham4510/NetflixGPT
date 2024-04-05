@@ -1,13 +1,15 @@
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import {LOGO} from '../utils/constants.jsx'
+import {LOGO, SUPPORTED_LANGUAGES} from '../utils/constants.jsx'
 import {toggleGptSearchView} from '../utils/gptSlice.jsx'
 import { useDispatch, useSelector } from "react-redux";
+import {changeLanguage} from '../utils/configSlice.jsx'
 
 const Header = ({handleIsLoggedIn,isLoggedIn,userLogIn}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user)
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch)
 
   const handleSignOut = async () => {
     const auth = getAuth();
@@ -34,6 +36,10 @@ const Header = ({handleIsLoggedIn,isLoggedIn,userLogIn}) => {
     dispatch(toggleGptSearchView())
   }
 
+  const handleLanguageChange = (e)=>{
+    console.log(e.target.value);
+    dispatch(changeLanguage(e.target.value))
+  }
 
 
   return (
@@ -42,23 +48,19 @@ const Header = ({handleIsLoggedIn,isLoggedIn,userLogIn}) => {
 
     {
       userLogIn?<div className=" flex gap-3">
-       <select name="lang" className={`px-2 py-1 rounded-sm bg-black/45 border border-white`}>
-            <option className='text-black' value="eng">English</option>
-            <option className='text-black' value="hindi">Hindi</option>
-            <option className='text-black' value="spanish">Spanish</option>
-        </select>
-      <button className={` ${userLogIn?"block":"hidden"} px-3 py-2 rounded-sm bg-gradient-to-r from-orange-600 to-yellow-500 hover:opacity-80 text-white `} onClick={handleGptSearchClick}>GPT Search</button>
-      <button className={` ${userLogIn?"block":"hidden"} px-3 py-2 rounded-sm bg-red-600 text-white `} onClick={handleGptSearchClick}>Sign Out</button>
+      {showGptSearch && <select name="lang" className={`px-2 py-1 rounded-sm bg-black/45 border border-white`} onChange={handleLanguageChange}>
+        {
+          SUPPORTED_LANGUAGES.map(lang => <option key={lang.identifier} value={lang.identifier} className='text-black'>{lang.name}</option>)
+        }
+            
+        </select>}
+      <button className={` ${userLogIn?"block":"hidden"} px-3 py-2 rounded-sm bg-gradient-to-r from-orange-600 to-yellow-500 hover:opacity-80 text-white `} onClick={handleGptSearchClick}>{showGptSearch? "Homepage":"GPT Search"}</button>
+      <button className={` ${userLogIn?"block":"hidden"} px-3 py-2 rounded-sm bg-red-600 text-white `} onClick={handleSignOut}>Sign Out</button>
       </div>:
-      <div className={`${isLoggedIn? "block":"hidden"} flex gap-5 `} >
-        <select name="lang" className={`px-2 py-1 rounded-sm bg-transparent border border-white`}>
-            <option className='text-black' value="en">English</option>
-            <option className='text-black' value="hindi">Hindi</option>
-            <option className='text-black' value="spanish">Spanish</option>
-        </select>
+        
+      
         
 <button className={` px-2 py-1 rounded-sm bg-red-600 text-white `} onClick={handleIsLoggedIn}>Sign Up</button>
-</div>
     }
      
     </div>
